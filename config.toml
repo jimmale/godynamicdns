@@ -1,0 +1,7 @@
+debug = true
+
+[[domain]]
+username = "bKC2LOQGcwh8AKK7"
+password = "X9qO4VEgAJmljiBM"
+hostname = "home.doombotindustries.com"
+frequency = "30s"
