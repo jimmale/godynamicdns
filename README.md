@@ -18,6 +18,7 @@ A Dynamic DNS Updater in Go
 - Debug logging flag ✅
 
 ### MVP+
+- Config file in `/etc` or local directory
 - Get Public IP (and lease expiration) via UPnP
 - Schedule IP updates based off of lease expiration
 - Dry run
