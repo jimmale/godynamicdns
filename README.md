@@ -6,16 +6,16 @@ A Dynamic DNS Updater in Go
 
 ## Milestones
 ### MTP
-- Configuration file
-- Make the HTTP POST to update the ip, not providing any IP and letting the server sort it out
-- Do so on a 60 minute loop
+- Configuration file ✅
+- Make the HTTP POST to update the ip, not providing any IP and letting the server sort it out ✅
+- Do so on a 60 minute loop ✅
 
 ### MVP
 - systemd unit / pid file
 - deb/rpm packages
-- Configuration file
+- Configuration file ✅
 - Retry logic
-- Debug logging flag
+- Debug logging flag ✅
 
 ### MVP+
 - Get Public IP (and lease expiration) via UPnP
