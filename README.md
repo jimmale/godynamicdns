@@ -27,6 +27,7 @@ A Dynamic DNS Updater in Go
 
 
 ##Example configuration
+
 ```toml
 debug = true
 
