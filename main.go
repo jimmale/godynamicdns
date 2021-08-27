@@ -38,6 +38,19 @@ func main() {
 		log.Fatalf("Could not parse configuration file: %s", err.Error())
 	}
 
+	//// connect to router
+	//d, err := upnp.Discover()
+	//if err != nil {
+	//	log.Fatal(err)
+	//}
+	//
+	//// discover external IP
+	//ip, err := d.ExternalIP()
+	//if err != nil {
+	//	log.Fatal(err)
+	//}
+	//log.Println("Your external IP is:", ip)
+
 	if conf.Debug {
 		log.SetLevel(log.TraceLevel)
 	}
@@ -91,7 +104,7 @@ func update(hostname string, username string, password string, isRetry bool) err
 
 	req.Header.Set("User-Agent", "godynamicdns")
 
-		q := req.URL.Query()
+	q := req.URL.Query()
 	q.Add("hostname", hostname)
 	req.URL.RawQuery = q.Encode()
 	req.SetBasicAuth(username, password)

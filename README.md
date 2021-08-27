@@ -38,9 +38,9 @@ frequency = "60m"
 
 
 ## Libraries Used
-| Library | License | 
-| ------- | ------- |
-| [Sirupsen/Logrus](https://github.com/Sirupsen/logrus) | MIT |
-| [BurntSushi/toml](https://github.com/BurntSushi/toml) | MIT |
-
+| Library | License | Purpose | 
+| ------- | ------- | ------- | 
+| [Sirupsen/Logrus](https://github.com/Sirupsen/logrus) | MIT | Pretty Logging | 
+| [BurntSushi/toml](https://github.com/BurntSushi/toml) | MIT | Config File Parsing | 
+| [NebulousLabs/go-upnp](https://gitlab.com/NebulousLabs/go-upnp) | MIT | Discovering external IP |
 
