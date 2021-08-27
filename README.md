@@ -25,7 +25,7 @@ A Dynamic DNS Updater in Go
 - Documentation
 - SIGHUP for configuration reload
 
-##Example configuration
+## Example configuration
 
 ```toml
 debug = true
