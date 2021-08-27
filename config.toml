@@ -4,4 +4,4 @@ debug = true
 username = "bKC2LOQGcwh8AKK7"
 password = "X9qO4VEgAJmljiBM"
 hostname = "home.doombotindustries.com"
-frequency = "30s"
+frequency = "30m"

@@ -3,7 +3,7 @@ package config
 import "time"
 
 type Configuration struct {
-	Debug bool
+	Debug   bool
 	Domains []Domain `toml:"domain"`
 }
 
@@ -13,7 +13,6 @@ type Domain struct {
 	Hostname  string
 	Frequency duration
 }
-
 
 type duration struct {
 	time.Duration
