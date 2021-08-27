@@ -89,7 +89,9 @@ func update(hostname string, username string, password string, isRetry bool) err
 
 	req, _ := http.NewRequest(http.MethodPost, "https://domains.google.com/nic/update", nil)
 
-	q := req.URL.Query()
+	req.Header.Set("User-Agent", "godynamicdns")
+
+		q := req.URL.Query()
 	q.Add("hostname", hostname)
 	req.URL.RawQuery = q.Encode()
 	req.SetBasicAuth(username, password)
