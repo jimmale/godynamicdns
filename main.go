@@ -66,8 +66,8 @@ func maintain(ctx context.Context, domain *config.Domain) {
 		default:
 			{
 				log.Trace("maintain -> default case")
-				err := update(domain.Hostname, domain.Username, domain.Password)
-				if err != nil{
+				err := update(domain.Hostname, domain.Username, domain.Password, false)
+				if err != nil {
 					log.Error(err.Error())
 					return
 				}
@@ -78,7 +78,7 @@ func maintain(ctx context.Context, domain *config.Domain) {
 	}
 }
 
-func update(hostname string, username string, password string) error {
+func update(hostname string, username string, password string, isRetry bool) error {
 	log.Tracef("Initiating IP Update for %s", hostname)
 	client := &http.Client{
 		Transport:     nil,
@@ -114,12 +114,48 @@ func update(hostname string, username string, password string) error {
 			log.Infof("Successfully updated %s: %s", hostname, respBody)
 			break
 		}
-		// TODO handle other responses https://support.google.com/domains/answer/6147083#zippy=%2Cuse-the-api-to-update-your-dynamic-dns-record
+	case string(respBody) == "nohost":
+		{
+			return fmt.Errorf("the hostname %s doesn't exist, or doesn't have Dynamic DNS enabled", hostname)
+		}
+	case string(respBody) == "badauth":
+		{
+			return fmt.Errorf("the username/password combination isn't valid for the specified host (%s)", hostname)
+		}
+	case string(respBody) == "notfqdn":
+		{
+			return fmt.Errorf("the supplied hostname (%s) isn't a valid fully-qualified domain name", hostname)
+		}
+	case string(respBody) == "badagent":
+		{
+			return errors.New("your Dynamic DNS client makes bad requests. Ensure the user agent is set in the request")
+		}
+	case string(respBody) == "abuse":
+		{
+			return errors.New("dynamic DNS access for the hostname has been blocked due to failure to interpret previous responses correctly")
+		}
+	case string(respBody) == "911":
+		{
+			if isRetry {
+				return errors.New("an error occurred")
+			} else {
+				time.Sleep(5*time.Minute + 30*time.Second) // I know the docs say 5 minutes, but let's give it a bit more time.
+				return update(hostname, username, password, true)
+			}
+		}
+	case string(respBody) == "conflict A":
+		{
+			return fmt.Errorf("a custom A resource record conflicts with the update to %s . Delete the indicated resource record within the DNS settings page and try the update again", hostname)
+		}
+	case string(respBody) == "conflict AAAA":
+		{
+			return fmt.Errorf("a custom AAAA resource record conflicts with the update to %s . Delete the indicated resource record within the DNS settings page and try the update again", hostname)
+		}
+
 	default:
 		{
-		return errors.New(fmt.Sprintf("Received error while updating IP: %s", respBody))
+			return errors.New(fmt.Sprintf("Received error while updating IP: %s", respBody))
 		}
 	}
-
 	return nil
 }
