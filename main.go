@@ -2,6 +2,8 @@ package main
 
 import (
 	"context"
+	"errors"
+	"fmt"
 	"github.com/BurntSushi/toml"
 	"github.com/jimmale/godynamicdns/config"
 	log "github.com/sirupsen/logrus"
@@ -9,9 +11,13 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"regexp"
 	"syscall"
 	"time"
 )
+
+var goodRegex = regexp.MustCompile("good .*")
+var nochgRegex = regexp.MustCompile("nochg .*")
 
 func main() {
 	customFormatter := new(log.TextFormatter)
@@ -26,7 +32,11 @@ func main() {
 
 	conf := config.Configuration{}
 
-	toml.Decode(string(contents), &conf)
+	_, err = toml.Decode(string(contents), &conf)
+
+	if err != nil {
+		log.Fatalf("Could not parse configuration file: %s", err.Error())
+	}
 
 	if conf.Debug {
 		log.SetLevel(log.TraceLevel)
@@ -56,7 +66,11 @@ func maintain(ctx context.Context, domain *config.Domain) {
 		default:
 			{
 				log.Trace("maintain -> default case")
-				update(domain.Hostname, domain.Username, domain.Password)
+				err := update(domain.Hostname, domain.Username, domain.Password)
+				if err != nil{
+					log.Error(err.Error())
+					return
+				}
 				log.Tracef("Updater for %s sleeping for %s", domain.Hostname, domain.Frequency.Duration.String())
 				time.Sleep(domain.Frequency.Duration)
 			}
@@ -89,6 +103,23 @@ func update(hostname string, username string, password string) error {
 
 	respBody, _ := ioutil.ReadAll(resp.Body)
 
-	log.Infof("IP Update for %s complete: %s", hostname, string(respBody))
+	switch {
+	case nochgRegex.Match(respBody):
+		{
+			log.Tracef("No change to IP for %s: %s", hostname, respBody)
+		}
+
+	case goodRegex.Match(respBody):
+		{
+			log.Infof("Successfully updated %s: %s", hostname, respBody)
+			break
+		}
+		// TODO handle other responses https://support.google.com/domains/answer/6147083#zippy=%2Cuse-the-api-to-update-your-dynamic-dns-record
+	default:
+		{
+		return errors.New(fmt.Sprintf("Received error while updating IP: %s", respBody))
+		}
+	}
+
 	return nil
 }
