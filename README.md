@@ -1,5 +1,7 @@
 # godynamicdns
-A Dynamic DNS Updater in Go
+A Dynamic DNS Updater in Go.
+
+It fits my very narrow use case, hopefully it's useful to someone else too.
 
 ## Supported Providers
 - Google Domains (Not Google Cloud DNS)
@@ -49,6 +51,7 @@ goreleaser release --rm-dist --snapshot
 
 ## Example configuration
 
+`/etc/godynamicdns/config.toml`
 ```toml
 debug = true
 
