@@ -4,6 +4,26 @@ A Dynamic DNS Updater in Go
 ## Supported Providers
 - Google Domains (Not Google Cloud DNS)
 
+## Supported Platforms
+
+| OS      | 386 | amd64 | arm6 | arm64 |
+| ---     | --- | ----  | ---  | ----  |
+| Linux   |     | ✅     | ✅    | ✅   |
+| Windows |     |       |      |       |
+| MacOS   |     |       |      |       |
+
+
+## Building
+### Requirements:
+- GoLang 1.16+
+- [Goreleaser](https://goreleaser.com/) (optional, to build linux packages)
+
+### Build instructions
+```
+goreleaser release --rm-dist --snapshot
+```
+
+
 ## Milestones
 ### MTP
 - Configuration file ✅
@@ -12,7 +32,7 @@ A Dynamic DNS Updater in Go
 
 ### MVP
 - systemd unit / pid file
-- deb/rpm packages
+- deb/rpm packages ✅
 - Configuration file ✅
 - Retry logic
 - Debug logging flag ✅
@@ -37,11 +57,13 @@ hostname = "batcave.wayneindustries.com"
 frequency = "60m"
 ```
 
+## Dependencies
+### Buildtime
+| Library                                                         | License | Purpose                 |
+| -------                                                         | ------- | -------                 |
+| [Sirupsen/Logrus](https://github.com/Sirupsen/logrus)           | MIT     | Pretty Logging          |
+| [BurntSushi/toml](https://github.com/BurntSushi/toml)           | MIT     | Config File Parsing     |
+| [NebulousLabs/go-upnp](https://gitlab.com/NebulousLabs/go-upnp) | MIT     | Discovering external IP |
 
-## Libraries Used
-| Library | License | Purpose | 
-| ------- | ------- | ------- | 
-| [Sirupsen/Logrus](https://github.com/Sirupsen/logrus) | MIT | Pretty Logging | 
-| [BurntSushi/toml](https://github.com/BurntSushi/toml) | MIT | Config File Parsing | 
-| [NebulousLabs/go-upnp](https://gitlab.com/NebulousLabs/go-upnp) | MIT | Discovering external IP |
-
+### Runtime
+- Working CA Certificate store (see [here](https://stackoverflow.com/a/40051432)) to build a secure connection to Google

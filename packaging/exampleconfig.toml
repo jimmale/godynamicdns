@@ -1,0 +1,7 @@
+debug = true
+
+[[domain]]
+username = "Bruce.Wayne"
+password = "iamb@man"
+hostname = "batcave.wayneindustries.com"
+frequency = "60m"
