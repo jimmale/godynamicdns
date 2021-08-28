@@ -17,12 +17,31 @@ import (
 	"time"
 )
 
+// These are set in the CICD pipeline.
+var version string
+var commit string
+var date string
+var builtBy string
+
 var goodRegex = regexp.MustCompile("good .*")
 var nochgRegex = regexp.MustCompile("nochg .*")
 
 func main() {
 
-	versionString := "notSet"
+	if version == "" {
+		version = "snapshot"
+	}
+	if commit == "" {
+		commit = "unknown commit"
+	}
+	if date == "" {
+		date = "???"
+	}
+	if builtBy == "" {
+		builtBy = "anonymous"
+	}
+
+	versionString := fmt.Sprintf("%s (%s) built on %s by %s", version, commit, date, builtBy)
 
 	app := &cli.App{
 		Name:    "godynamicdns",
