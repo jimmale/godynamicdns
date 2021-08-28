@@ -73,3 +73,4 @@ frequency = "60m"
 
 ### Runtime
 - Working CA Certificate store (see [here](https://stackoverflow.com/a/40051432)) to build a secure connection to Google
+- Systemd is recommended, but you can absolutely run it without.
