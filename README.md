@@ -41,7 +41,7 @@ goreleaser release --rm-dist --snapshot
 - Debug logging flag ✅
 
 ### MVP+
-- License flag
+- License flag ✅
 - Run under systemd unit as something other than root
 - Warn of dangerous file permissions on configuration file
 - Config file in `/etc/godynamicdns/config.toml` ✅
@@ -53,7 +53,6 @@ goreleaser release --rm-dist --snapshot
 - SIGHUP for configuration reload
 - version numbers in build ✅
 - Update once every 24h + jitter
-
 
 ## Example configuration
 
