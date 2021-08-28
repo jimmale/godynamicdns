@@ -23,7 +23,7 @@ It fits my very narrow use case, hopefully it's useful to someone else too.
 
 ### Build instructions
 ```
-go-licenses save github.com/jimmale/godynamicdns --save_path="./licenseterms/licenses/"
+go-licenses save github.com/jimmale/godynamicdns --save_path="./terms/terms/"
 goreleaser release --rm-dist --snapshot
 ```
 
@@ -42,7 +42,7 @@ goreleaser release --rm-dist --snapshot
 - Debug logging flag ✅
 
 ### MVP+
-- License flag ✅
+- License flag
 - Run under systemd unit as something other than root
 - Warn of dangerous file permissions on configuration file
 - Config file in `/etc/godynamicdns/config.toml` ✅

@@ -1,4 +1,4 @@
-package licenseterms
+package terms
 
 import (
 	"embed"
@@ -8,18 +8,17 @@ import (
 	"strings"
 )
 
-// content holds our static web server content.
-//go:embed licenses/*
+//go:embed terms/*
 var content embed.FS
 
 func PrintLicenseTerms() {
 	fmt.Print("Usage, modification, and distribution of this software and its components are subject to the following respective licensing terms:\n\n")
 
-	_ = fs.WalkDir(content, "licenses", MyWalkFunc)
+	_ = fs.WalkDir(content, "terms", MyWalkFunc)
 }
 
 func MyWalkFunc(path string, d fs.DirEntry, err error) error {
-	if !d.IsDir() {
+	if !d.IsDir() && d.Name() != "make_embedFS_happy" {
 		components := strings.Split(path, "/")
 		components = components[1 : len(components)-1]
 		cleanPath := filepath.Join(components...)

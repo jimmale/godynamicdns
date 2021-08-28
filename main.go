@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"github.com/BurntSushi/toml"
 	"github.com/jimmale/godynamicdns/config"
-	"github.com/jimmale/godynamicdns/licenseterms"
+	"github.com/jimmale/godynamicdns/terms"
 	log "github.com/sirupsen/logrus"
 	"github.com/urfave/cli/v2"
 	"io/ioutil"
@@ -86,8 +86,8 @@ func main() {
 func mainAction(c *cli.Context) error {
 
 	if c.Bool("license") {
-		licenseterms.PrintLicenseTerms()
-		os.Exit(0)
+		terms.PrintLicenseTerms()
+		return nil
 	}
 
 	customFormatter := new(log.TextFormatter)

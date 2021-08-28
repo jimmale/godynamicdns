@@ -5,12 +5,16 @@ before:
     # you may remove this if you don't need go generate
 #    - go generate ./...
     - gofmt -w ./
-    - go-licenses save github.com/jimmale/godynamicdns --save_path="./licenseterms/licenses/"
+    - rm -fr ./terms/terms
+    - mkdir -p ./terms/terms
+    - touch ./terms/terms/make_embedFS_happy
+    - go-licenses save github.com/jimmale/godynamicdns --clobber --save_path="./terms/terms/"
 builds:
   - env:
       - CGO_ENABLED=0
     goos:
       - linux
+      - darwin
     goarch:
       - amd64
       - arm
