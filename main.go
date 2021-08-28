@@ -157,8 +157,8 @@ func update(domain *config.Domain, isRetry bool) error {
 		return err
 	}
 
-	if resp.StatusCode != http.StatusOK{
-		if !isRetry{
+	if resp.StatusCode != http.StatusOK {
+		if !isRetry {
 			time.Sleep(5 * time.Minute)
 			return update(domain, true)
 		} else {

@@ -8,3 +8,7 @@ Type=simple
 PIDFile=/var/run/godynamicdns.pid
 ExecStart=/usr/local/bin/godynamicdns
 KillSignal=SIGTERM
+Nice=18
+
+[Install]
+WantedBy=multi-user.target
