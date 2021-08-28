@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"github.com/BurntSushi/toml"
 	"github.com/jimmale/godynamicdns/config"
+	"github.com/jimmale/godynamicdns/licenseterms"
 	log "github.com/sirupsen/logrus"
 	"github.com/urfave/cli/v2"
 	"io/ioutil"
@@ -21,7 +22,6 @@ var goodRegex = regexp.MustCompile("good .*")
 var nochgRegex = regexp.MustCompile("nochg .*")
 
 func main() {
-
 	versionString := "notSet"
 
 	app := &cli.App{
@@ -49,6 +49,11 @@ func main() {
 				Destination: nil,
 				HasBeenSet:  false,
 			},
+			&cli.BoolFlag{
+				Name: "license",
+				Usage: "print the license terms of this software and exit",
+				Value: false,
+			},
 		},
 	}
 
@@ -59,6 +64,11 @@ func main() {
 
 }
 func mainAction(c *cli.Context) error {
+
+	if c.Bool("license"){
+		licenseterms.PrintLicenseTerms()
+		os.Exit(0)
+	}
 
 	customFormatter := new(log.TextFormatter)
 	customFormatter.TimestampFormat = "2006-01-02 15:04:05"

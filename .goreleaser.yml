@@ -5,6 +5,7 @@ before:
     # you may remove this if you don't need go generate
 #    - go generate ./...
     - gofmt -w ./
+    - go-licenses save github.com/jimmale/godynamicdns --save_path="./licenseterms/licenses/"
 builds:
   - env:
       - CGO_ENABLED=0
