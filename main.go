@@ -7,6 +7,7 @@ import (
 	"github.com/BurntSushi/toml"
 	"github.com/jimmale/godynamicdns/config"
 	log "github.com/sirupsen/logrus"
+	"github.com/urfave/cli/v2"
 	"io/ioutil"
 	"net/http"
 	"os"
@@ -20,6 +21,31 @@ var goodRegex = regexp.MustCompile("good .*")
 var nochgRegex = regexp.MustCompile("nochg .*")
 
 func main() {
+
+	versionString := "notSet"
+
+	app := &cli.App{
+		Name:    "godynamicdns",
+		Usage:   "A Dynamic DNS Updater in Go",
+		Version: versionString,
+		Action:  mainAction,
+		Flags: []cli.Flag{
+			&cli.BoolFlag{
+				Name:  "debug",
+				Usage: "enable debug logging",
+				Value: false,
+			},
+		},
+	}
+
+	err := app.Run(os.Args)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+}
+func mainAction(c *cli.Context) error {
+
 	customFormatter := new(log.TextFormatter)
 	customFormatter.TimestampFormat = "2006-01-02 15:04:05"
 	customFormatter.FullTimestamp = true
@@ -51,7 +77,7 @@ func main() {
 	//}
 	//log.Println("Your external IP is:", ip)
 
-	if conf.Debug {
+	if conf.Debug || c.Bool("debug") {
 		log.SetLevel(log.TraceLevel)
 	}
 
@@ -65,6 +91,7 @@ func main() {
 	log.Info("awaiting exit signal")
 	<-sigs
 	log.Infof("Exiting")
+	return nil
 }
 
 func maintain(ctx context.Context, domain *config.Domain) {
@@ -79,7 +106,7 @@ func maintain(ctx context.Context, domain *config.Domain) {
 		default:
 			{
 				log.Trace("maintain -> default case")
-				err := update(domain.Hostname, domain.Username, domain.Password, false)
+				err := update(domain, false)
 				if err != nil {
 					log.Error(err.Error())
 					return
@@ -91,8 +118,8 @@ func maintain(ctx context.Context, domain *config.Domain) {
 	}
 }
 
-func update(hostname string, username string, password string, isRetry bool) error {
-	log.Tracef("Initiating IP Update for %s", hostname)
+func update(domain *config.Domain, isRetry bool) error {
+	log.Tracef("Initiating IP Update for %s", domain.Hostname)
 	client := &http.Client{
 		Transport:     nil,
 		CheckRedirect: nil,
@@ -105,9 +132,9 @@ func update(hostname string, username string, password string, isRetry bool) err
 	req.Header.Set("User-Agent", "godynamicdns")
 
 	q := req.URL.Query()
-	q.Add("hostname", hostname)
+	q.Add("hostname", domain.Hostname)
 	req.URL.RawQuery = q.Encode()
-	req.SetBasicAuth(username, password)
+	req.SetBasicAuth(domain.Username, domain.Password)
 
 	resp, err := client.Do(req)
 	if err != nil {
@@ -121,25 +148,25 @@ func update(hostname string, username string, password string, isRetry bool) err
 	switch {
 	case nochgRegex.Match(respBody):
 		{
-			log.Tracef("No change to IP for %s: %s", hostname, respBody)
+			log.Tracef("No change to IP for %s: %s", domain.Hostname, respBody)
 		}
 
 	case goodRegex.Match(respBody):
 		{
-			log.Infof("Successfully updated %s: %s", hostname, respBody)
+			log.Infof("Successfully updated %s: %s", domain.Hostname, respBody)
 			break
 		}
 	case string(respBody) == "nohost":
 		{
-			return fmt.Errorf("the hostname %s doesn't exist, or doesn't have Dynamic DNS enabled", hostname)
+			return fmt.Errorf("the hostname %s doesn't exist, or doesn't have Dynamic DNS enabled", domain.Hostname)
 		}
 	case string(respBody) == "badauth":
 		{
-			return fmt.Errorf("the username/password combination isn't valid for the specified host (%s)", hostname)
+			return fmt.Errorf("the username/password combination isn't valid for the specified host (%s)", domain.Hostname)
 		}
 	case string(respBody) == "notfqdn":
 		{
-			return fmt.Errorf("the supplied hostname (%s) isn't a valid fully-qualified domain name", hostname)
+			return fmt.Errorf("the supplied hostname (%s) isn't a valid fully-qualified domain name", domain.Hostname)
 		}
 	case string(respBody) == "badagent":
 		{
@@ -155,16 +182,16 @@ func update(hostname string, username string, password string, isRetry bool) err
 				return errors.New("an error occurred")
 			} else {
 				time.Sleep(5*time.Minute + 30*time.Second) // I know the docs say 5 minutes, but let's give it a bit more time.
-				return update(hostname, username, password, true)
+				return update(domain, true)
 			}
 		}
 	case string(respBody) == "conflict A":
 		{
-			return fmt.Errorf("a custom A resource record conflicts with the update to %s . Delete the indicated resource record within the DNS settings page and try the update again", hostname)
+			return fmt.Errorf("a custom A resource record conflicts with the update to %s . Delete the indicated resource record within the DNS settings page and try the update again", domain.Hostname)
 		}
 	case string(respBody) == "conflict AAAA":
 		{
-			return fmt.Errorf("a custom AAAA resource record conflicts with the update to %s . Delete the indicated resource record within the DNS settings page and try the update again", hostname)
+			return fmt.Errorf("a custom AAAA resource record conflicts with the update to %s . Delete the indicated resource record within the DNS settings page and try the update again", domain.Hostname)
 		}
 
 	default:
