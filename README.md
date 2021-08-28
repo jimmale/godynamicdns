@@ -34,7 +34,7 @@ goreleaser release --rm-dist --snapshot
 - systemd unit / pid file ✅
 - deb/rpm packages ✅
 - Configuration file ✅
-- Retry logic
+- Retry logic ✅
 - Debug logging flag ✅
 
 ### MVP+
