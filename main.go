@@ -35,6 +35,20 @@ func main() {
 				Usage: "enable debug logging",
 				Value: false,
 			},
+			&cli.StringFlag{
+				Name:        "config",
+				Aliases:     []string{"c"},
+				Usage:       "specify a configuration file",
+				EnvVars:     nil,
+				FilePath:    "",
+				Required:    false,
+				Hidden:      false,
+				TakesFile:   false,
+				Value:       "/etc/godynamicdns/config.toml",
+				DefaultText: "",
+				Destination: nil,
+				HasBeenSet:  false,
+			},
 		},
 	}
 
@@ -51,7 +65,9 @@ func mainAction(c *cli.Context) error {
 	customFormatter.FullTimestamp = true
 	log.SetFormatter(customFormatter)
 
-	contents, err := ioutil.ReadFile("config.toml")
+	configFile := c.String("config")
+
+	contents, err := ioutil.ReadFile(configFile)
 	if err != nil {
 		log.Fatal(err.Error())
 	}

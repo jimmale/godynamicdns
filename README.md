@@ -38,9 +38,10 @@ goreleaser release --rm-dist --snapshot
 - Debug logging flag ✅
 
 ### MVP+
-- Config file in `/etc/godynamicdns/config.toml`
+- Config file in `/etc/godynamicdns/config.toml` ✅
 - Get Public IP (and lease expiration) via UPnP
 - Schedule IP updates based off of lease expiration
+- Schedule IP updates when UPnP indicates that the public IP has changed
 - Dry run
 - Documentation
 - SIGHUP for configuration reload
