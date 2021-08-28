@@ -31,14 +31,14 @@ goreleaser release --rm-dist --snapshot
 - Do so on a 60 minute loop ✅
 
 ### MVP
-- systemd unit / pid file
+- systemd unit / pid file ✅
 - deb/rpm packages ✅
 - Configuration file ✅
 - Retry logic
 - Debug logging flag ✅
 
 ### MVP+
-- Config file in `/etc` or local directory
+- Config file in `/etc/godynamicdns/config.toml`
 - Get Public IP (and lease expiration) via UPnP
 - Schedule IP updates based off of lease expiration
 - Dry run
