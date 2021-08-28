@@ -8,11 +8,11 @@ It fits my very narrow use case, hopefully it's useful to someone else too.
 
 ## Supported Platforms
 
-| OS      | 386 | amd64 | arm6 | arm7 | arm64 |
-| ---     | --- | ----  | ---  | ---  | ----  |
-| Linux   |     | ✅     | ✅    | ✅    | ✅     |
-| Windows |     |       |      |      |       |
-| MacOS   |     |       |      |      |       |
+| OS      | 386 | amd64 | arm6 | arm64 |
+| ---     | --- | ----  | ---  | ----  |
+| Linux   |     | ✅     | ✅    | ✅     |
+| Windows |     |       |      |       |
+| MacOS   |     |       |      |       |
 
 
 ## Building
