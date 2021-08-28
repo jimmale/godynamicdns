@@ -157,6 +157,16 @@ func update(domain *config.Domain, isRetry bool) error {
 		return err
 	}
 
+	if resp.StatusCode != http.StatusOK{
+		if !isRetry{
+			time.Sleep(5 * time.Minute)
+			return update(domain, true)
+		} else {
+			return fmt.Errorf("could not update DNS. result code was %d", resp.StatusCode)
+		}
+
+	}
+
 	defer resp.Body.Close()
 
 	respBody, _ := ioutil.ReadAll(resp.Body)
