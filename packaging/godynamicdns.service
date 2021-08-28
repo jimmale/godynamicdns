@@ -1,0 +1,10 @@
+[Unit]
+Description=A Dynamic DNS Updater in Go
+Documentation=https://github.com/jimmale/godynamicdns
+After=network.target
+
+[Service]
+Type=simple
+PIDFile=/var/run/godynamicdns.pid
+ExecStart=/usr/local/bin/godynamicdns
+KillSignal=SIGTERM
