@@ -23,6 +23,7 @@ It fits my very narrow use case, hopefully it's useful to someone else too.
 
 ### Build instructions
 ```
+go-licenses save github.com/jimmale/godynamicdns --save_path="./licenseterms/licenses/"
 goreleaser release --rm-dist --snapshot
 ```
 

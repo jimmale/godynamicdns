@@ -70,7 +70,7 @@ func main() {
 				HasBeenSet:  false,
 			},
 			&cli.BoolFlag{
-				Name: "license",
+				Name:  "license",
 				Usage: "print the license terms of this software and exit",
 				Value: false,
 			},
@@ -85,7 +85,7 @@ func main() {
 }
 func mainAction(c *cli.Context) error {
 
-	if c.Bool("license"){
+	if c.Bool("license") {
 		licenseterms.PrintLicenseTerms()
 		os.Exit(0)
 	}

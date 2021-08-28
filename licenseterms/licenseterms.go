@@ -12,18 +12,17 @@ import (
 //go:embed licenses/*
 var content embed.FS
 
-func PrintLicenseTerms(){
+func PrintLicenseTerms() {
 	fmt.Print("Usage, modification, and distribution of this software and its components are subject to the following respective licensing terms:\n\n")
 
 	_ = fs.WalkDir(content, "licenses", MyWalkFunc)
 }
 
-
-func MyWalkFunc(path string, d fs.DirEntry, err error) error{
-	if !d.IsDir(){
+func MyWalkFunc(path string, d fs.DirEntry, err error) error {
+	if !d.IsDir() {
 		components := strings.Split(path, "/")
-		components = components[1:len(components)-1]
-		cleanPath:=filepath.Join(components...)
+		components = components[1 : len(components)-1]
+		cleanPath := filepath.Join(components...)
 
 		fileContent, _ := fs.ReadFile(content, path)
 
