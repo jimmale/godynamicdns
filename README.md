@@ -8,7 +8,7 @@ A Dynamic DNS Updater in Go
 
 | OS      | 386 | amd64 | arm6 | arm64 |
 | ---     | --- | ----  | ---  | ----  |
-| Linux   |     | ✅     | ✅    | ✅   |
+| Linux   |     | ✅     | ✅    | ✅     |
 | Windows |     |       |      |       |
 | MacOS   |     |       |      |       |
 
@@ -44,6 +44,7 @@ goreleaser release --rm-dist --snapshot
 - Dry run
 - Documentation
 - SIGHUP for configuration reload
+- version numbers in build
 
 ## Example configuration
 
@@ -58,12 +59,13 @@ frequency = "60m"
 ```
 
 ## Dependencies
-### Build time
-| Library                                                         | License | Purpose                 |
-| -------                                                         | ------- | -------                 |
-| [Sirupsen/Logrus](https://github.com/Sirupsen/logrus)           | MIT     | Pretty Logging          |
-| [BurntSushi/toml](https://github.com/BurntSushi/toml)           | MIT     | Config File Parsing     |
-| [NebulousLabs/go-upnp](https://gitlab.com/NebulousLabs/go-upnp) | MIT     | Discovering external IP |
+### Buildtime
+| Library                                                         | License | Purpose                           |
+| -------                                                         | ------- | -------                           |
+| [Sirupsen/Logrus](https://github.com/Sirupsen/logrus)           | MIT     | Pretty Logging                    |
+| [BurntSushi/toml](https://github.com/BurntSushi/toml)           | MIT     | Config File Parsing               |
+| [urfave/cli](https://github.com/urfave/cli)                     | MIT     | Command line parameter management |
+| [NebulousLabs/go-upnp](https://gitlab.com/NebulousLabs/go-upnp) | MIT     | Discovering external IP           |
 
 ### Runtime
 - Working CA Certificate store (see [here](https://stackoverflow.com/a/40051432)) to build a secure connection to Google

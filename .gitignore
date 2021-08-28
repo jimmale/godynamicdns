@@ -18,3 +18,5 @@ config.toml
 dist/
 
 .idea/
+
+godynamicdns
