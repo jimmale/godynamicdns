@@ -42,7 +42,7 @@ goreleaser release --rm-dist --snapshot
 - Debug logging flag ✅
 
 ### MVP+
-- License flag
+- License flag ✅
 - Run under systemd unit as something other than root
 - Warn of dangerous file permissions on configuration file
 - Config file in `/etc/godynamicdns/config.toml` ✅
