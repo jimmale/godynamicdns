@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"github.com/BurntSushi/toml"
 	"github.com/jimmale/godynamicdns/config"
+	"github.com/jimmale/godynamicdns/terms"
 	log "github.com/sirupsen/logrus"
 	"github.com/urfave/cli/v2"
 	"io/ioutil"
@@ -68,6 +69,11 @@ func main() {
 				Destination: nil,
 				HasBeenSet:  false,
 			},
+			&cli.BoolFlag{
+				Name:  "license",
+				Usage: "print the license terms of this software and exit",
+				Value: false,
+			},
 		},
 	}
 
@@ -78,6 +84,11 @@ func main() {
 
 }
 func mainAction(c *cli.Context) error {
+
+	if c.Bool("license") {
+		terms.PrintLicenseTerms()
+		return nil
+	}
 
 	customFormatter := new(log.TextFormatter)
 	customFormatter.TimestampFormat = "2006-01-02 15:04:05"
