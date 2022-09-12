@@ -5,6 +5,6 @@ go 1.16
 require (
 	github.com/BurntSushi/toml v1.1.0
 	github.com/sirupsen/logrus v1.8.1
-	github.com/urfave/cli/v2 v2.14.0
+	github.com/urfave/cli/v2 v2.16.2
 	golang.org/x/sys v0.0.0-20210330210617-4fbd30eecc44 // indirect
 )
