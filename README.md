@@ -18,10 +18,12 @@ It fits my very narrow use case, hopefully it's useful to someone else too.
 ## Building
 ### Requirements:
 - GoLang 1.16+
+- [go-licenses](https://github.com/google/go-licenses)
 - [Goreleaser](https://goreleaser.com/) (optional, to build linux packages)
 
 ### Build instructions
 ```
+go-licenses save github.com/jimmale/godynamicdns --save_path="./terms/terms/"
 goreleaser release --rm-dist --snapshot
 ```
 
@@ -40,6 +42,9 @@ goreleaser release --rm-dist --snapshot
 - Debug logging flag ✅
 
 ### MVP+
+- License flag ✅
+- Run under systemd unit as something other than root
+- Warn of dangerous file permissions on configuration file
 - Config file in `/etc/godynamicdns/config.toml` ✅
 - Get Public IP (and lease expiration) via UPnP
 - Schedule IP updates based off of lease expiration
@@ -48,6 +53,7 @@ goreleaser release --rm-dist --snapshot
 - Documentation
 - SIGHUP for configuration reload
 - version numbers in build ✅
+- Update once every 24h + jitter
 
 ## Example configuration
 
